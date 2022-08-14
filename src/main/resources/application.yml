@@ -1,0 +1,70 @@
+spring:
+  datasource:
+    url: jdbc:mysql://112.74.92.240:3306/payment?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC&useSSL=false
+    username: root
+    password: 8523996
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    separator: //
+
+  redis:
+    host: 112.74.92.240
+    port: 6379
+    password: 8523996
+
+  rabbitmq:
+    host: 112.74.92.240
+    port: 5672
+    username: root
+    password: 8523996
+    virtual-host: ban-springboot
+
+    cache:
+      connection:
+        mode: channel
+      channel:
+        size: 50
+
+    template:
+      retry:
+        enable: true
+        initial-interval: 1s
+        max-attempts: 5
+        multiplier: 2
+      exchange: pay
+      routing-key: paymessage
+
+    listener:
+      type: simple
+      simple:
+        acknowledge-mode: auto
+        retry:
+          enable: true
+          max-attempts: 2
+          initial-interval: 1s
+
+
+
+channel:
+  alipay:
+    appId: 2016101800715197
+    privateKey: MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCL03gy2Jt81Kkt6PWNUzqvQDCRZ3w7MhTuWRZTi5OpxgBXK9fQ+qqRQIgjYeWdggfS3qNksnaAKtLDuOd/8PSJC6BO0y7Gf2YraVvXOdUXAYGD19rX/D1btjIgKGXiXKjK6yMtpRjXubEd1zO9KbNdg5L7lncr5Gd4llilxNeQyCFCYhsMtOwKGNM+pLig/KDDWwr37DUibCGyt6UrIiODFTGCcNgFgQRfNjjXilijKXvcYEsEuxMNnfQTxQ9jlKnQ4sPKvj5/rVEvrfKLDphW+rTlzQ48PevZn+yVEwv2bTQdv0hP2bh1IRJQtXk92CPrRG0BdYGP7OIaQn0rOprnAgMBAAECggEAbPZTYdQ4fvO+Dt/Okt48ChvMfVMWlY62jvLvmhVX8eIxm7y3xsvAJccTD/eXFsIg1KvYynzkKYa1jf5GsQYVmcJsn2Ckv9zBwqys/DC+JNpwkkyg5tVS/2gg8bxpgRfSFaddV5GjpWC4bFeqowufEg2ZeeNMZPDtzSPkWvHlRpXwGag0Zs35jpzDT7+1aR5sIalQ1mVAYojzEta+8zus6xU0YASDmUxaPmFv2UFD1BOWferRFuJVhHU52qSzRt8CloO+fb8XZIUenT8ntgJ4/JFeEsXtV6A5KbbGdeRmknePJpF2Vc0ix2ssybqYdozCXvdgc0x7dHK+1q3plJoLqQKBgQDtOCNVVmkwPlpCVd20y9B0R7V2Q6yOFw+9bPxPPY5XzApU+zFC7ti4s2MUrQYKReVxG2FFRF0Ru/B+2HkuWEzX2l+G43DbiPLupJI6L5oW1B9V9QrLTCBBchStFhU1suaKdrrqbfpNJaMsyS5o2zUpEvcY0znODPUSzqdssoJvIwKBgQCW5WfmkJgN1vN292OdHWFcjHZBD07AbKTzkxKSTiXDRRrQeMmY1sGzr0FIWpKEOSryKM5iiB0E+CNkvaCDQUFOdDe7jh/r3FLwSee4JqGPNyoYk9WvUXktYTkrnNUaHYonRfWevAFFhcTN4VtknJ3aMvTsi83mmw186R+zxTqjbQKBgEWOAE41WAJdRfnNU4R/fk+Z9wsGLMI84NCZ9CEH24TCvwTL4lXN0p3Ve2fEk9DPTccsUAkPUnqwsIOA1YdRPLbNwNS8O4sjTJfMiVOmQXgQGmAJyXBykcKewJE/uFhWbGKNDaFPPeUA9Cddlc4I+D1i4jDVPk28Xt902IJ2lOghAoGAN+WRIIrNmMrYc2hfATOB/nuVzrHx9TwJuqTvizzhpj0yGqmz3Ccpp/syzq+meM6Ihx3wnfVX8qBM1COekyCYJYzNnG+giYmbO6HU8ZV14YyIzoPs8z3WCqZqPCqjkkIBDF1RCFUSj4NnDPD/Hv0ZSFv5+KotQtCLJYtiEADuoN0CgYEAtULle7Pydc3DS3Jl+jI68BaAZty9N992mzOjexQw58goKG3EzydZNgg76a5yEKHGETiy0dznsP63ov/XyTx//clMZGKBbvotrkwUewSdO6/1XYUIEeW9EphT/7BoOs/9rP529nOxkP0YezgGqsYpz0ZKHNqQknK5DAz6C/IzJVM=
+    publicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAi9N4MtibfNSpLej1jVM6r0AwkWd8OzIU7lkWU4uTqcYAVyvX0PqqkUCII2HlnYIH0t6jZLJ2gCrSw7jnf/D0iQugTtMuxn9mK2lb1znVFwGBg9fa1/w9W7YyIChl4lyoyusjLaUY17mxHdczvSmzXYOS+5Z3K+RneJZYpcTXkMghQmIbDLTsChjTPqS4oPygw1sK9+w1ImwhsrelKyIjgxUxgnDYBYEEXzY414pYoyl73GBLBLsTDZ30E8UPY5Sp0OLDyr4+f61RL63yiw6YVvq05c0OPD3r2Z/slRML9m00Hb9IT9m4dSESULV5Pdgj60RtAXWBj+ziGkJ9Kzqa5wIDAQAB
+    payUrl: https://openapi.alipaydev.com/gateway.do
+
+mybatis-plus:
+  mapper-locations: classpath:mybatis/*.xml
+  typeAliasesPackage: org.pingan.payment.dao.model
+  global-config:
+    db-config:
+      id-type: auto
+      field-strategy: not_empty
+      column-underline: true
+      logic-delete-value: 0
+      logic-not-delete-value: 1
+      db-type: mysql
+    refresh: false
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enable: false
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
